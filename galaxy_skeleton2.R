@@ -106,3 +106,12 @@ head(galaxies)
 # observations.
 
 
+#######################
+# Problem 3
+
+ggplot(galaxies, aes(x = a_26)) +
+  geom_histogram(fill = "blue", alpha = 0.7, bins = 100) +
+  labs(title = "Distribution of Galaxy Sizes (a_26)", x = "Size (a_26 in kpc)", y = "Count") +
+  theme_minimal()
+
+
