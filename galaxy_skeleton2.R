@@ -109,9 +109,17 @@ head(galaxies)
 #######################
 # Problem 3
 
-ggplot(galaxies, aes(x = a_26)) +
-  geom_histogram(fill = "blue", alpha = 0.7, bins = 100) +
-  labs(title = "Distribution of Galaxy Sizes (a_26)", x = "Size (a_26 in kpc)", y = "Count") +
+galaxies %>% 
+  filter(D <= 11) %>% 
+  ggplot(aes(x = a_26)) +
+  geom_histogram(bins = 50) +
+  labs(title = "Distribution of Galaxy Sizes (a_26)", 
+       x = "Linear diameter of the galazy in kpc (a_26)", 
+       y = "Count") +
   theme_minimal()
+
+# The histogram show a clear peak of small galaxies, but it does also have a sharp drop
+# for the smallest size. This might indicate that the smallest ones are under represented
+# This could be due to the fact that they are harder to spot than the larger ones.
 
 
