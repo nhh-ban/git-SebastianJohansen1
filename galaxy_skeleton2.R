@@ -16,7 +16,7 @@ library(tidyverse)    # Contains most of what we need.
 # the file does not end with an "end of line"-character (EOL). This does not
 # seem to pose a problem later, and it seems that we can silece the warning by
 # switchin off the "warn"-argument. Do that if you wish.
-raw_file <- readLines(con = "?")
+raw_file <- readLines(con = "suites_dw_Table1.txt", warn = FALSE)
 
 # Identify the line number L of the separator line between the column names and
 # the rest of the data table.
@@ -31,7 +31,7 @@ raw_file <- readLines(con = "?")
 
 # What do you need to replace the two question marks with in order to extract
 # the first two letters?
-substr(x = raw_file, start = ?, stop = ?)
+substr(x = raw_file, start = 0, stop = 2)
 
 # The next step is then to find out *which* line starts with "--", and pick out
 # the first one. This can be done in a nice little pipe, where you have to fill
