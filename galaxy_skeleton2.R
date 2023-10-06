@@ -123,3 +123,58 @@ galaxies %>%
 # This could be due to the fact that they are harder to spot than the larger ones.
 
 
+#####################
+# Problem 4
+
+# I do exactly the same as problem 2, only with new names
+raw_velocity <- readLines(con = "UCNG_Table4.txt", warn = FALSE)
+head(raw_velocity)
+
+M <- (substr(x = raw_velocity, start = 1, stop = 2) == "--") %>% 
+  which %>% 
+  min
+
+velocity_variable_names <- 
+  str_split(string = raw_velocity[M-1], pattern = "\\|") %>% 
+  unlist() %>% 
+  str_trim()
+velocity_variable_names
+
+comma_separated_velocity_values <- 
+  raw_velocity[(M+1):length(raw_velocity)] %>% 
+  gsub("\\|", ",", .) %>% 
+  gsub(" ", "", .)
+head(comma_separated_velocity_values)
+
+comma_separated_velocity_values_with_names <- 
+  c(paste(velocity_variable_names, collapse = ","),
+    comma_separated_velocity_values)    
+head(comma_separated_velocity_values_with_names)
+
+cat(comma_separated_velocity_values_with_names, sep = "\n", file = "velocity_filtered.csv")
+
+# Printing the filtered data
+velocity <- read_csv("velocity_filtered.csv")
+head(velocity)
+
+# Joining the data together
+galaxy_velocity <- inner_join(galaxies, velocity, by = "name")
+head(galaxy_velocity)
+
+# Plot proving Hubble's law about the expansion of space
+galaxy_velocity %>% 
+  ggplot(aes(x = D, y = cz, colour = m_b)) +
+  geom_point(aes(size = a_26)) +
+  geom_smooth(colour = "red") +
+  labs(
+    title = "The expansion of space",
+    x = "Distance from Earth",
+    y = "Velocity relative to Earth"
+  ) +
+  theme_classic()
+
+# Linear model to calculate the H. 
+# I get 94.3 which is a bit higher than the estimated H of around 70
+hubble_model <- lm(cz ~ D, data = galaxy_velocity)
+hubble_constant_estimate <- coef(hubble_model)["D"]
+
